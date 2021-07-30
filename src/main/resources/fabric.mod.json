@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "michael",
+  "version": "${version}",
+  "name": "michaelcraft",
+  "description": "uhhhhh",
+  "authors": [
+    "me"
+  ],
+  "contributors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/michael/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.airplanegaming.michaelcraft.MiChaelCraft"
+    ],
+    "client": [
+      "com.airplanegaming.michaelcraft.MiChaelCraftClient"
+    ],
+    "server": []
+  },
+  "mixins": [
+    "michael.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.6",
+    "fabric": "*"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.airplanegaming.michaelcraft.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "BrewingRecipeRegistryAccessor",
+    "DefaultBiomeFeaturesMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
