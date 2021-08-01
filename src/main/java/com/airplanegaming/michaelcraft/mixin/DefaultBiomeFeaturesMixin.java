@@ -13,6 +13,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class DefaultBiomeFeaturesMixin {
     @Inject(method = "addPlainsMobs", at = @At("HEAD"), cancellable = true)
     private static void addPlainsMobs(SpawnSettings.Builder builder, CallbackInfo info) {
-        builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(ModRegistry.TOBY, 100, 1, 1));
+        builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(ModRegistry.TOBY, 1, 1, 1));
+    }
+
+    @Inject(method = "addMonsters", at = @At("HEAD"), cancellable = true)
+    private static void addMonsters(SpawnSettings.Builder builder, int zombieWeight, int zombieVillagerWeight, int skeletonWeight, CallbackInfo info) {
+        builder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(ModRegistry.KAI, 4, 1, 2));
     }
 }

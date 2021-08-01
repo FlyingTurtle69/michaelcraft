@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "BrewingRecipeRegistryAccessor",
-    "DefaultBiomeFeaturesMixin"
+    "DefaultBiomeFeaturesMixin",
+    "LivingEntityAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 public class Pokimaine extends Item {
 
     public Pokimaine() {
-        super(new Item.Settings().group(MiChaelCraft.ITEM_GROUP).maxCount(1));
+        super(MiChaelCraft.itemSettings().maxCount(1));
     }
 
     @Override
