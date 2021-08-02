@@ -42,7 +42,7 @@ public class ModRegistry {
             Toby.createMobAttributes()
     );
     public static final EntityType<Millager> MILLAGER = createEntity("millager", FabricEntityTypeBuilder.create(
-            SpawnGroup.MISC, Millager::new).dimensions(EntityDimensions.fixed(0.6f, 1.99f)).build(),
+            SpawnGroup.CREATURE, Millager::new).dimensions(EntityDimensions.fixed(0.6f, 1.99f)).build(),
             Millager.createVillagerAttributes()
     );
     public static final EntityType<Kai> KAI = createEntity("kai", FabricEntityTypeBuilder.create(
@@ -66,7 +66,7 @@ public class ModRegistry {
         // Potions
         createPotion(new StatusEffectInstance(StatusEffects.INSTANT_DAMAGE, 20, 5),
                 "instant_die", Potions.STRONG_HARMING, FOOT);
-        createPotion(new StatusEffectInstance(SIMP_EFFECT, 60 * 20), "simping", Potions.AWKWARD, POKIMAINE);
+        createPotion(new StatusEffectInstance(SIMP_EFFECT, 60 * 20), "simping", Potions.WEAKNESS, POKIMAINE);
 
         // Dimension
         CustomPortalBuilder.beginPortal().frameBlock(Blocks.GLOWSTONE)
