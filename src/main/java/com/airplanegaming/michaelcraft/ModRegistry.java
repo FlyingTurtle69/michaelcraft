@@ -1,6 +1,7 @@
 package com.airplanegaming.michaelcraft;
 
 import com.airplanegaming.michaelcraft.effect.SimpEffect;
+import com.airplanegaming.michaelcraft.entity.Borg;
 import com.airplanegaming.michaelcraft.entity.Kai;
 import com.airplanegaming.michaelcraft.entity.Millager;
 import com.airplanegaming.michaelcraft.entity.Toby;
@@ -13,10 +14,12 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
@@ -41,6 +44,10 @@ public class ModRegistry {
             SpawnGroup.CREATURE, Toby::new).dimensions(EntityDimensions.fixed(4.3f, 4.3f)).build(),
             Toby.createMobAttributes()
     );
+    public static final EntityType<Borg> BORG = createEntity("borg", FabricEntityTypeBuilder.create(
+            SpawnGroup.CREATURE, Borg::new).dimensions(EntityDimensions.fixed(4.3f, 4.3f)).build(),
+            Borg.createMobAttributes()
+            );
     public static final EntityType<Millager> MILLAGER = createEntity("millager", FabricEntityTypeBuilder.create(
             SpawnGroup.CREATURE, Millager::new).dimensions(EntityDimensions.fixed(0.6f, 1.99f)).build(),
             Millager.createVillagerAttributes()
@@ -49,10 +56,18 @@ public class ModRegistry {
             SpawnGroup.MONSTER, Kai::new).dimensions(EntityDimensions.fixed(0.069f, 0.069f)).build(),
             Kai.createSilverfishAttributes()
     );
+    public static final EntityType<ChickenEntity> GIANT_CHICKEN = createEntity("giant_chicken",
+            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, ChickenEntity::new)
+                    .dimensions(EntityDimensions.fixed(7.2f, 10.5f)).build(),
+            ChickenEntity.createChickenAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 300)
+    );
 
+    // Effect
     public static final StatusEffect SIMP_EFFECT = new SimpEffect();
 
+    // Sounds
     public static final SoundEvent TOBY_TARKOV_SOUND = createSound("toby_tarkov");
+    public static final SoundEvent BANANA_SOUND = createSound("banana");
 
     public static void registerThings() {
         // Items
@@ -108,10 +123,6 @@ public class ModRegistry {
         final Potion potion = new Potion(effect);
         Registry.register(Registry.POTION, new Identifier(MiChaelCraft.MOD_ID, name), potion);
         BrewingRecipeRegistryAccessor.invokeRegisterPotionRecipe(base, ingredient, potion);
-//        Tried to make potions appear in itemgroup but didn't work
-//        List<ItemStack> list = new ArrayList();
-//        list.add(PotionUtil.setPotion(new ItemStack(Items.POTION), potion));
-//        MiChaelCraft.ITEM_GROUP.appendStacks((DefaultedList<ItemStack>) list);
     }
 
     private static void registerItem(String name, Item item) {

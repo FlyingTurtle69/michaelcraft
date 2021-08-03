@@ -1,6 +1,8 @@
 package com.airplanegaming.michaelcraft.entity;
 
 import com.airplanegaming.michaelcraft.ModRegistry;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -26,5 +28,10 @@ public class Toby extends CowEntity {
     public CowEntity createChild(ServerWorld world, PassiveEntity entity) {
         world.createExplosion(entity, entity.getX(), entity.getY(), entity.getZ(), 69f, Explosion.DestructionType.DESTROY);
         return null;
+    }
+
+    @Override
+    protected float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
+        return 2.5f;
     }
 }

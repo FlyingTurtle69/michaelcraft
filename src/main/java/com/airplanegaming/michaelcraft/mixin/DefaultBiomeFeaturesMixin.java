@@ -14,6 +14,7 @@ public class DefaultBiomeFeaturesMixin {
     @Inject(method = "addPlainsMobs", at = @At("HEAD"), cancellable = true)
     private static void addPlainsMobs(SpawnSettings.Builder builder, CallbackInfo info) {
         builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(ModRegistry.TOBY, 1, 1, 1));
+        builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(ModRegistry.BORG, 1, 1, 1));
     }
 
     @Inject(method = "addMonsters", at = @At("HEAD"), cancellable = true)
@@ -24,5 +25,6 @@ public class DefaultBiomeFeaturesMixin {
     @Inject(method = "addFarmAnimals", at = @At("HEAD"), cancellable = true)
     private static void addFarmAnimals(SpawnSettings.Builder builder, CallbackInfo info) {
         builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(ModRegistry.MILLAGER, 1, 1, 3));
+        builder.spawn(SpawnGroup.CREATURE, new SpawnSettings.SpawnEntry(ModRegistry.GIANT_CHICKEN, 1, 1, 2));
     }
 }

@@ -34,10 +34,8 @@ public class MagicMirror extends Item {
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        if (world.isClient()) {
-            MiChaelCraft.log(Level.INFO, "is client");
-            return stack;
-        }
+        if (world.isClient()) return stack;
+
         MiChaelCraft.log(Level.INFO, "Magic Mirror used");
 
         ServerPlayerEntity player = (ServerPlayerEntity)user;

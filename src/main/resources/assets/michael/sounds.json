@@ -3,5 +3,10 @@
     "sounds": [
       "michael:toby_tarkov"
     ]
+  },
+  "banana": {
+    "sounds": [
+      "michael:banana"
+    ]
   }
 }
