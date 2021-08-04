@@ -4,6 +4,7 @@ import com.airplanegaming.michaelcraft.client.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.minecraft.client.model.*;
@@ -12,10 +13,12 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModelPartNames;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
 // I might need this idk
 @Environment(EnvType.CLIENT)
+@SuppressWarnings("UnstableApiUsage deprecation")
 public class MiChaelCraftClient implements ClientModInitializer {
 
     public static final EntityModelLayer MODEL_GIANT_CHICKEN_LAYER = new EntityModelLayer(new Identifier(MiChaelCraft.MOD_ID, "giant_chicken"), "main");
@@ -30,7 +33,7 @@ public class MiChaelCraftClient implements ClientModInitializer {
             ModelPartData modelPartData = modelData.getRoot();
             final int SCALE = 15;
             final int YTRANS = 337;
-            modelPartData.addChild("head", ModelPartBuilder.create().uv(0, 0).cuboid(-2.0F * SCALE, -6.0F * SCALE - YTRANS, -2.0F * SCALE, 4.0F * SCALE, 6.0F * SCALE, 3.0F * SCALE), ModelTransform.pivot(0.0F, 15.0F * SCALE, -4.0F * SCALE));
+            modelPartData.addChild("head", ModelPartBuilder.create().uv(0, 0).cuboid(-2.0F * SCALE, -6.0F * SCALE, -2.0F * SCALE, 4.0F * SCALE, 6.0F * SCALE, 3.0F * SCALE), ModelTransform.pivot(0.0F, 15.0F * SCALE - YTRANS, -4.0F * SCALE));
             modelPartData.addChild("beak", ModelPartBuilder.create().uv(14 * SCALE, 0).cuboid(-2.0F * SCALE, -4.0F * SCALE - YTRANS, -4.0F * SCALE, 4.0F * SCALE, 2.0F  * SCALE, 2.0F * SCALE), ModelTransform.pivot(0.0F, 15.0F * SCALE, -4.0F * SCALE));
             modelPartData.addChild("red_thing", ModelPartBuilder.create().uv(14 * SCALE, 4 * SCALE).cuboid(-1.0F * SCALE, -2.0F * SCALE - YTRANS, -3.0F * SCALE, 2.0F * SCALE, 2.0F * SCALE, 2.0F * SCALE), ModelTransform.pivot(0.0F, 15.0F * SCALE, -4.0F * SCALE));
             modelPartData.addChild("body", ModelPartBuilder.create().uv(0, 9 * SCALE).cuboid(-3.0F * SCALE, -4.0F * SCALE, -3.0F * SCALE, 6.0F * SCALE, 8.0F * SCALE, 6.0F * SCALE), ModelTransform.of(0.0F, 16.0F * SCALE - YTRANS, 0.0F, 1.5707964F, 0.0F, 0.0F));
@@ -45,6 +48,18 @@ public class MiChaelCraftClient implements ClientModInitializer {
         createJpegModel("toby", ModRegistry.TOBY);
         createJpegModel("borg", ModRegistry.BORG);
         createModel("kai", ModRegistry.KAI,0.069f, -0.5f, 23f, -0.5f, 1f, 1f, 1f, 1, 1);
+
+        // Receiving packets for emergency meeting https://fabricmc.net/wiki/tutorial:networking
+        ClientPlayNetworking.registerGlobalReceiver(MiChaelCraft.SUS_PACKET_ID, (client, handler, buf, responseSender)-> client.execute(() -> {
+            client.inGameHud.setTitle(new LiteralText("§4EMERGENCY MEETING"));
+            assert client.player != null;
+            client.player.playSound(ModRegistry.SUS_ALARM_SOUND, 1f, 1f);
+        }));
+        ClientPlayNetworking.registerGlobalReceiver(MiChaelCraft.SUS_PACKET_ID2, (client, handler, buf, responseSender)-> client.execute(() -> {
+            assert client.player != null;
+            client.player.playSound(ModRegistry.SUS_DING_SOUND, 1f, 1f);
+        }));
+
     }
 
     private static <T extends MobEntity> void createModel(String name, EntityType<T> entity, float shadowSize, float offsetX, float offsetY, float offsetZ, float sizeX, float sizeY, float sizeZ, int textureW, int textureH) {

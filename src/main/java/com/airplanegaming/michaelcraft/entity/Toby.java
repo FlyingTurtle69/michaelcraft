@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("EntityConstructor")
 public class Toby extends CowEntity {
 
     public Toby(EntityType<? extends CowEntity> entityType, World world) {
@@ -27,6 +28,7 @@ public class Toby extends CowEntity {
     @Override
     public CowEntity createChild(ServerWorld world, PassiveEntity entity) {
         world.createExplosion(entity, entity.getX(), entity.getY(), entity.getZ(), 69f, Explosion.DestructionType.DESTROY);
+        this.calculateDimensions();
         return null;
     }
 

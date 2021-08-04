@@ -1,10 +1,8 @@
 package com.airplanegaming.michaelcraft;
 
 import com.airplanegaming.michaelcraft.effect.SimpEffect;
-import com.airplanegaming.michaelcraft.entity.Borg;
-import com.airplanegaming.michaelcraft.entity.Kai;
-import com.airplanegaming.michaelcraft.entity.Millager;
-import com.airplanegaming.michaelcraft.entity.Toby;
+import com.airplanegaming.michaelcraft.entity.*;
+import com.airplanegaming.michaelcraft.item.EmergencyMeeting;
 import com.airplanegaming.michaelcraft.item.MagicMirror;
 import com.airplanegaming.michaelcraft.item.Pokimaine;
 import com.airplanegaming.michaelcraft.mixin.BrewingRecipeRegistryAccessor;
@@ -14,12 +12,10 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
@@ -38,6 +34,7 @@ public class ModRegistry {
             .statusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 20), 1f).build()
     ));
     public static final Item MAGIC_MIRROR = new MagicMirror();
+    public static final Item EMERGENCY_MEETING = new EmergencyMeeting();
 
     // Entities
     public static final EntityType<Toby> TOBY = createEntity("toby", FabricEntityTypeBuilder.create(
@@ -56,10 +53,8 @@ public class ModRegistry {
             SpawnGroup.MONSTER, Kai::new).dimensions(EntityDimensions.fixed(0.069f, 0.069f)).build(),
             Kai.createSilverfishAttributes()
     );
-    public static final EntityType<ChickenEntity> GIANT_CHICKEN = createEntity("giant_chicken",
-            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, ChickenEntity::new)
-                    .dimensions(EntityDimensions.fixed(7.2f, 10.5f)).build(),
-            ChickenEntity.createChickenAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 300)
+    public static final EntityType<GiantChicken> GIANT_CHICKEN = createEntity(
+            "giant_chicken", GiantChicken.createEntityType(), GiantChicken.createAttributes()
     );
 
     // Effect
@@ -68,12 +63,19 @@ public class ModRegistry {
     // Sounds
     public static final SoundEvent TOBY_TARKOV_SOUND = createSound("toby_tarkov");
     public static final SoundEvent BANANA_SOUND = createSound("banana");
+    public static final SoundEvent BORG_AMBIENT_SOUND = createSound("borg_ambient");
+    public static final SoundEvent BORG_HURT_SOUND = createSound("borg_hurt");
+    public static final SoundEvent BORG_DEATH_SOUND = createSound("borg_death");
+    public static final SoundEvent BORG_STEP_SOUND = createSound("borg_step");
+    public static final SoundEvent SUS_ALARM_SOUND = createSound("sus_alarm");
+    public static final SoundEvent SUS_DING_SOUND = createSound("sus_ding");
 
     public static void registerThings() {
         // Items
         registerItem("pokimaine", POKIMAINE);
         registerItem("foot", FOOT);
         registerItem("magic_mirror", MAGIC_MIRROR);
+        registerItem("emergency_meeting", EMERGENCY_MEETING);
 
         // Effect
         Registry.register(Registry.STATUS_EFFECT, new Identifier(MiChaelCraft.MOD_ID, "simp_effect"), SIMP_EFFECT);
@@ -92,6 +94,7 @@ public class ModRegistry {
         CommandRegistrationCallback.EVENT.register(((dispatcher, dedicated) -> dispatcher.register(
                 CommandManager.literal("good").requires(source -> source.hasPermissionLevel(2))
                 .executes(context -> {
+                    MiChaelCraft.log(Level.INFO, "Good command executed");
                     var world = context.getSource().getWorld();
                     world.setWeather(1000000, 0, false, false);
                     world.setTimeOfDay(1000);

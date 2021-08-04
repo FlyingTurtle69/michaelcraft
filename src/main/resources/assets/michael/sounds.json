@@ -8,5 +8,25 @@
     "sounds": [
       "michael:banana"
     ]
-  }
+  },
+  "borg_ambient": {
+    "sounds": [
+      "michael:borg_work",
+      "michael:borg_sweat"
+    ]
+  },
+  "borg_hurt": {
+    "sounds":[
+      "michael:borg_hate",
+      "michael:borg_toby_leave"
+    ]
+  },
+  "borg_death": {
+    "sounds": ["michael:borg_grass"]
+  },
+  "borg_step": {
+    "sounds": ["michael:borg_this_sucks"]
+  },
+  "sus_alarm": { "sounds":  ["michael:alarm"] },
+  "sus_ding": { "sounds":  ["michael:ding", "michael:ding_human"] }
 }
