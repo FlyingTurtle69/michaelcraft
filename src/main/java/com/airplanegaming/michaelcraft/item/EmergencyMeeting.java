@@ -38,6 +38,7 @@ public class EmergencyMeeting extends Item {
         for (var player : players) ServerPlayNetworking.send(player, MiChaelCraft.SUS_PACKET_ID, PacketByteBufs.empty());
 
         MiChaelCraft.susPart2 = new SusPart2(players, user, (ServerWorld) world);
+        stack.decrement(1);
 
         return stack;
     }

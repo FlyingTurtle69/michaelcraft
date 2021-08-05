@@ -28,7 +28,6 @@ public class Toby extends CowEntity {
     @Override
     public CowEntity createChild(ServerWorld world, PassiveEntity entity) {
         world.createExplosion(entity, entity.getX(), entity.getY(), entity.getZ(), 69f, Explosion.DestructionType.DESTROY);
-        this.calculateDimensions();
         return null;
     }
 
