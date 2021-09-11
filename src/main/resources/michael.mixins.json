@@ -6,6 +6,7 @@
     "BrewingRecipeRegistryAccessor",
     "DefaultBiomeFeaturesMixin",
     "LivingEntityAccessor",
+    "ServerPlayerEntityMixin",
     "VillagerEntityMixin"
   ],
   "injectors": {

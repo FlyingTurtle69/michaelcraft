@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#GE",
+    "IMI",
+    "EG#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:diamond_block"
+    },
+    "G": {
+      "item": "minecraft:gold_block"
+    },
+    "E": {
+      "item": "minecraft:emerald_block"
+    },
+    "I": {
+      "item": "minecraft:iron_block"
+    },
+    "M": {
+      "item": "michael:emergency_meeting"
+    }
+  },
+  "result": {
+    "item": "michael:troller",
+    "count": 1
+  }
+}

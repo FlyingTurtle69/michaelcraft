@@ -1,5 +1,10 @@
 # MiChaelCraft
 
+## Dependencies
+You will need these mods installed as well for MiChaelCraft to work:
+* [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
+* [Nbt Crafting](https://modrinth.com/mod/nbt-crafting)
+
 ## How to Install
 1. Go to https://fabricmc.net/use/ and download the .JAR installer
 2. Go to https://www.curseforge.com/minecraft/mc-mods/fabric-api and download the latest stable release

@@ -15,7 +15,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
-
 import java.util.List;
 
 public class EmergencyMeeting extends Item {
@@ -33,12 +32,13 @@ public class EmergencyMeeting extends Item {
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         if (world.isClient() || !(user instanceof PlayerEntity)) return stack;
 
-        MiChaelCraft.log(Level.INFO, "DING DING DING DING DING DING DING");
+        MiChaelCraft.log(Level.INFO, user.getDisplayName().asString() + " was acting a little sussy");
         var players = (List<ServerPlayerEntity>) world.getPlayers();
         for (var player : players) ServerPlayNetworking.send(player, MiChaelCraft.SUS_PACKET_ID, PacketByteBufs.empty());
 
         MiChaelCraft.susPart2 = new SusPart2(players, user, (ServerWorld) world);
         stack.decrement(1);
+        ((PlayerEntity) user).getItemCooldownManager().set(this, 72000);
 
         return stack;
     }

@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("EntityConstructor")
 public class Borg extends CowEntity {
 
     public Borg(EntityType<? extends CowEntity> entityType, World world) {
@@ -46,7 +45,6 @@ public class Borg extends CowEntity {
                 } else {
                     singingTicks++;
                 }
-
             }
         }
         super.baseTick();

@@ -2,10 +2,9 @@ package com.airplanegaming.michaelcraft;
 
 import com.airplanegaming.michaelcraft.effect.SimpEffect;
 import com.airplanegaming.michaelcraft.entity.*;
-import com.airplanegaming.michaelcraft.item.EmergencyMeeting;
-import com.airplanegaming.michaelcraft.item.MagicMirror;
-import com.airplanegaming.michaelcraft.item.Pokimaine;
+import com.airplanegaming.michaelcraft.item.*;
 import com.airplanegaming.michaelcraft.mixin.BrewingRecipeRegistryAccessor;
+import draylar.magna.api.BlockFinder;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
@@ -16,25 +15,31 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 import net.minecraft.entity.attribute.DefaultAttributeContainer.Builder;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class ModRegistry {
 
     // Items
-    public static final Item POKIMAINE = new Pokimaine();
-    public static final Item FOOT = new Item(MiChaelCraft.itemSettings().food(new FoodComponent.Builder().alwaysEdible()
-            .statusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 20), 1f).build()
+    public static final Item POKIMAINE = registerItem("pokimaine", new Pokimaine());
+    public static final Item FOOT = registerItem("foot", new Item(MiChaelCraft.itemSettings()
+            .food(new FoodComponent.Builder().alwaysEdible()
+                    .statusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 20), 1f).build())
     ));
-    public static final Item MAGIC_MIRROR = new MagicMirror();
-    public static final Item EMERGENCY_MEETING = new EmergencyMeeting();
 
     // Entities
     public static final EntityType<Toby> TOBY = createEntity("toby", FabricEntityTypeBuilder.create(
@@ -72,10 +77,48 @@ public class ModRegistry {
 
     public static void registerThings() {
         // Items
-        registerItem("pokimaine", POKIMAINE);
-        registerItem("foot", FOOT);
-        registerItem("magic_mirror", MAGIC_MIRROR);
-        registerItem("emergency_meeting", EMERGENCY_MEETING);
+        registerItem("magic_mirror", new MagicMirror());
+        registerItem("emergency_meeting", new EmergencyMeeting());
+        registerItem("troller", new MultiBreaker(8,18000, 4) {
+            @Override
+            public int getDepth(ItemStack stack) {
+                return 69;
+            }
+            // This has to be false otherwise game freezes
+            @Override
+            public boolean renderOutline(World world, BlockHitResult ray, PlayerEntity player, ItemStack stack) {
+                return false;
+            }
+        });
+        // Indexes of smiles blocks in findPositions
+        var smileNums = new HashSet<Integer>();
+        smileNums.add(1);
+        smileNums.add(5);
+        smileNums.add(8);
+        smileNums.add(10);
+        smileNums.add(12);
+        smileNums.add(15);
+        smileNums.add(18);
+        smileNums.add(21);
+        registerItem("smile", new MultiBreaker(2, 2000, 2) {
+            private final BlockFinder SMILE_FINDER = new BlockFinder() {
+                @Override
+                public List<BlockPos> findPositions(World world, PlayerEntity playerEntity, int radius, int depth) {
+                    var blocks = BlockFinder.super.findPositions(world, playerEntity, radius, depth);
+                    // When not looking at blocks. If this isn't here it crashes
+                    if (blocks.size() == 0) return blocks;
+
+                    ArrayList<BlockPos> smileBlocks = new ArrayList<>();
+                    for (int i = 0; i < 25; i++) if (smileNums.contains(i)) smileBlocks.add(blocks.get(i));
+
+                    return smileBlocks;
+                }
+            };
+            @Override
+            public BlockFinder getBlockFinder() {
+                return SMILE_FINDER;
+            }
+        });
 
         // Effect
         Registry.register(Registry.STATUS_EFFECT, new Identifier(MiChaelCraft.MOD_ID, "simp_effect"), SIMP_EFFECT);
@@ -128,8 +171,9 @@ public class ModRegistry {
         BrewingRecipeRegistryAccessor.invokeRegisterPotionRecipe(base, ingredient, potion);
     }
 
-    private static void registerItem(String name, Item item) {
+    private static Item registerItem(String name, Item item) {
         Registry.register(Registry.ITEM, new Identifier(MiChaelCraft.MOD_ID, name), item);
+        return item;
     }
 
 }

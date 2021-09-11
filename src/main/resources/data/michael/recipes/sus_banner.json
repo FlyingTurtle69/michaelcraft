@@ -1,0 +1,44 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "#E#",
+    "#B#"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:redstone"
+    },
+    "E": {
+      "item": "michael:emergency_meeting"
+    },
+    "B": {
+      "tag": "minecraft:banners"
+    }
+  },
+  "result": {
+    "item": "minecraft:black_banner",
+    "count": 1,
+    "data": {
+      "display": {
+        "Name": {
+          "text": "Sussy Banner",
+          "italic": true,
+          "color": "red",
+          "nbtcrafting:stringify": true
+        }
+      },
+      "BlockEntityTag":{
+        "Patterns":[
+          {"Pattern":"hh","Color":14},
+          {"Pattern":"hhb", "Color":14},
+          {"Pattern":"ms", "Color":3},
+          {"Pattern":"rs", "Color":14},
+          {"Pattern":"bo", "Color":15},
+          {"Pattern":"ts", "Color":15},
+          {"Pattern":"bts", "Color":15}
+        ]
+      }
+    }
+  }
+}
