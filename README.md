@@ -4,13 +4,14 @@
 You will need these mods installed as well for MiChaelCraft to work:
 * [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
 * [Nbt Crafting](https://modrinth.com/mod/nbt-crafting)
+* [Kotlin](https://www.curseforge.com/minecraft/mc-mods/fabric-language-kotlin)
 
 ## How to Install
 1. Go to https://fabricmc.net/use/ and download the .JAR installer
-2. Go to https://www.curseforge.com/minecraft/mc-mods/fabric-api and download the latest stable release
+2. Download the dependencies
 3. Go to https://github.com/FlyingTurtle69/michaelcraft/releases, click Assets then download the .jar file. 
 4. Run the fabric installer .jar file, make sure the versions are the latest (not snapshot) and then click install.
-5. Go to your `.minecraft` folder (in windows search type  `%appdata%`) and create a `mods` folder and drag the fabric api and MiChaelCraft jar files into it.
+5. Go to your `.minecraft` folder (in windows search type  `%appdata%`) and create a `mods` folder and drag the dependencies and MiChaelCraft jar files into it.
 
 ## Building From Source
 If you want to build from the sourcecode, simply run `./gradlew build`

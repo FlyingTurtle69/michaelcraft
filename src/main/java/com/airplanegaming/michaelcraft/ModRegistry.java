@@ -1,14 +1,17 @@
 package com.airplanegaming.michaelcraft;
 
+import com.airplanegaming.michaelcraft.block.Minion;
 import com.airplanegaming.michaelcraft.effect.SimpEffect;
 import com.airplanegaming.michaelcraft.entity.*;
 import com.airplanegaming.michaelcraft.item.*;
 import com.airplanegaming.michaelcraft.mixin.BrewingRecipeRegistryAccessor;
 import draylar.magna.api.BlockFinder;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.kyrptonaught.customportalapi.api.CustomPortalBuilder;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.effect.StatusEffect;
@@ -19,7 +22,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
-import net.minecraft.server.command.CommandManager;
+import static net.minecraft.server.command.CommandManager.literal;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
@@ -43,11 +46,11 @@ public class ModRegistry {
 
     // Entities
     public static final EntityType<Toby> TOBY = createEntity("toby", FabricEntityTypeBuilder.create(
-            SpawnGroup.CREATURE, Toby::new).dimensions(EntityDimensions.fixed(4.3f, 4.3f)).build(),
+            SpawnGroup.CREATURE, Toby::new).dimensions(EntityDimensions.fixed(4f, 4f)).build(),
             Toby.createMobAttributes()
     );
     public static final EntityType<Borg> BORG = createEntity("borg", FabricEntityTypeBuilder.create(
-            SpawnGroup.CREATURE, Borg::new).dimensions(EntityDimensions.fixed(4.3f, 4.3f)).build(),
+            SpawnGroup.CREATURE, Borg::new).dimensions(EntityDimensions.fixed(4f, 4f)).build(),
             Borg.createMobAttributes()
             );
     public static final EntityType<Millager> MILLAGER = createEntity("millager", FabricEntityTypeBuilder.create(
@@ -60,6 +63,10 @@ public class ModRegistry {
     );
     public static final EntityType<GiantChicken> GIANT_CHICKEN = createEntity(
             "giant_chicken", GiantChicken.createEntityType(), GiantChicken.createAttributes()
+    );
+    public static final EntityType<Michael> MICHAEL = createEntity("michael", FabricEntityTypeBuilder.create(
+            SpawnGroup.MISC, Michael::new).dimensions(EntityDimensions.fixed(4f, 4f)).build(),
+            Michael.createAttributes()
     );
 
     // Effect
@@ -74,6 +81,9 @@ public class ModRegistry {
     public static final SoundEvent BORG_STEP_SOUND = createSound("borg_step");
     public static final SoundEvent SUS_ALARM_SOUND = createSound("sus_alarm");
     public static final SoundEvent SUS_DING_SOUND = createSound("sus_ding");
+
+    // Block
+    public static final Block MINION = new Minion();
 
     public static void registerThings() {
         // Items
@@ -133,17 +143,28 @@ public class ModRegistry {
                 .destDimID(new Identifier(MiChaelCraft.MOD_ID, "aether")).lightWithWater()
                 .tintColor(31, 98, 255).onlyLightInOverworld().registerPortal();
 
-        // Command
-        CommandRegistrationCallback.EVENT.register(((dispatcher, dedicated) -> dispatcher.register(
-                CommandManager.literal("good").requires(source -> source.hasPermissionLevel(2))
-                .executes(context -> {
-                    MiChaelCraft.log(Level.INFO, "Good command executed");
-                    var world = context.getSource().getWorld();
-                    world.setWeather(1000000, 0, false, false);
-                    world.setTimeOfDay(1000);
-                    return 1;
-                })
-        )));
+        // Commands
+        CommandRegistrationCallback.EVENT.register(((dispatcher, dedicated) -> {
+            dispatcher.register(literal("good").requires(source -> source.hasPermissionLevel(2))
+                    .executes(context -> {
+                        MiChaelCraft.log(Level.INFO, "Good command executed");
+                        var world = context.getSource().getWorld();
+                        world.setWeather(1000000, 0, false, false);
+                        world.setTimeOfDay(1000);
+                        return 1;
+                    })
+            );
+            dispatcher.register(literal("michaelevent").requires(source -> source.hasPermissionLevel(2))
+                    .executes(context -> {
+                        MichaelEvent.executeRandom();
+                        return 1;
+                    })
+            );
+        }));
+
+        // Block
+        Registry.register(Registry.BLOCK, new Identifier(MiChaelCraft.MOD_ID, "minion"), MINION);
+        registerItem("minion", new BlockItem(MINION, new FabricItemSettings().group(MiChaelCraft.ITEM_GROUP)));
 
         MiChaelCraft.log(Level.INFO, "Registered everything");
     }
@@ -159,7 +180,7 @@ public class ModRegistry {
     }
 
     private static SoundEvent createSound(String name) {
-        var soundId = new Identifier("michael:" + name);
+        var soundId = new Identifier(MiChaelCraft.MOD_ID, name);
         var sound = new SoundEvent(soundId);
         Registry.register(Registry.SOUND_EVENT, soundId, sound);
         return sound;

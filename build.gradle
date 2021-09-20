@@ -50,6 +50,11 @@ dependencies {
 	// Custom portals
 	modImplementation 'net.kyrptonaught:customportalapi:0.0.1-beta39-1.17'
 	include 'net.kyrptonaught:customportalapi:0.0.1-beta39-1.17'
+
+	// Working Scheduler
+	modImplementation 'com.github.kowasaur:Working-Scheduler:test'
+	include('com.github.kowasaur:Working-Scheduler:test')
+	include("io.github.natanfudge:fabric-drawer:4.1.0-1.17.1")
 }
 
 processResources {

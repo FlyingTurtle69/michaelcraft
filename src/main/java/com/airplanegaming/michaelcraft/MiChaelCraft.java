@@ -1,8 +1,11 @@
 package com.airplanegaming.michaelcraft;
 
+import com.airplanegaming.michaelcraft.block.Minion;
 import com.airplanegaming.michaelcraft.item.EmergencyMeeting;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -39,6 +42,14 @@ public class MiChaelCraft implements ModInitializer {
         log(Level.INFO, "Initializing");
         ModRegistry.registerThings();
 
+        // Register events
+
+        // Start Michael Events
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            MichaelEvent.server = server;
+            new Minion().scheduleMichaelEvent(server.getOverworld());
+        });
+
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             if (susPart2 == null) return;
             // Alarm sound has finished
@@ -47,10 +58,19 @@ public class MiChaelCraft implements ModInitializer {
                 susPart2 = null;
             } else susPart2.ticks++;
         });
+
+        ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
+            // 5% chance of michael spawning
+            if (newPlayer.getRandom().nextInt(20) == 0) MichaelEvent.RUN.execute(newPlayer);
+        });
     }
 
     public static void log(Level level, String message){
         LOGGER.log(level, "["+MOD_NAME+"] " + message);
+    }
+
+    public static void log(String message){
+        LOGGER.log(Level.INFO, "["+MOD_NAME+"] " + message);
     }
 
     public static Item.Settings itemSettings() {

@@ -16,7 +16,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
-// I might need this idk
+// I might need this
 @Environment(EnvType.CLIENT)
 @SuppressWarnings("UnstableApiUsage deprecation")
 public class MiChaelCraftClient implements ClientModInitializer {
@@ -47,6 +47,8 @@ public class MiChaelCraftClient implements ClientModInitializer {
 
         createJpegModel("toby", ModRegistry.TOBY);
         createJpegModel("borg", ModRegistry.BORG);
+        createJpegModel("michael", ModRegistry.MICHAEL);
+
         createModel("kai", ModRegistry.KAI,0.069f, -0.5f, 23f, -0.5f, 1f, 1f, 1f, 1, 1);
 
         // Receiving packets for emergency meeting https://fabricmc.net/wiki/tutorial:networking
@@ -70,7 +72,7 @@ public class MiChaelCraftClient implements ClientModInitializer {
     }
 
     private static <T extends MobEntity> void createJpegModel(String name, EntityType<T> entity) {
-        createModel(name, entity, 3.2f, -34.5f, -45f, 0f, 69f, 69f, 0.5f, 69, 69);
+        createModel(name, entity, 2.3f, -34.5f, -45f, 0f, 69f, 69f, 0.5f, 69, 69);
     }
 
     private static TexturedModelData getTexturedModelData(float offsetX, float offsetY, float offsetZ, float sizeX, float sizeY, float sizeZ, int textureW, int textureH) {
